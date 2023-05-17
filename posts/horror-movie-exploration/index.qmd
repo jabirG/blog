@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday Horror Movies"
+title: "Horror Movies"
 author: "Jabir"
 format: 
   html:
