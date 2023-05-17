@@ -2,7 +2,6 @@ project:
   type: website
 
 website:
-  title: "jabir's blog"
   navbar:
     background: "#26155c"
     left: 
