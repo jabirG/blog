@@ -1,0 +1,14 @@
+---
+title: "Jabir's Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: unnumbered
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---
+
+
