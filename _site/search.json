@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Jabir’s Blog",
+    "section": "",
+    "text": "Tidy Tuesday Horror Movies\n\n\n\n\n\n\n\n\n\n\n\n\nJabir\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nMay 3, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nHorror Exploration\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nApr 30, 2023\n\n\nJabir Ghaffar\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "posts/horror-movie-exploration/index.html",
+    "href": "posts/horror-movie-exploration/index.html",
+    "title": "Tidy Tuesday Horror Movies",
+    "section": "",
+    "text": "I got this data from tidy tuesday on github\ntidytuesday/data/2022/2022-11-01 at master · rfordatascience/tidytuesday (github.com)"
+  },
+  {
+    "objectID": "posts/horror-movie-exploration/index.html#data",
+    "href": "posts/horror-movie-exploration/index.html#data",
+    "title": "Tidy Tuesday Horror Movies",
+    "section": "Data",
+    "text": "Data\nThe dataset is about horror movies and their genres and popularities. I chose this dataset because i’ve been wanting to watch horror movies but i didn’t know which ones were interesting or considered good."
+  },
+  {
+    "objectID": "posts/horror-movie-exploration/index.html#packages",
+    "href": "posts/horror-movie-exploration/index.html#packages",
+    "title": "Tidy Tuesday Horror Movies",
+    "section": "Packages",
+    "text": "Packages\nWhich packages will you be using and for what purpose?\nI will be using the tidyverse package for data wrangling and visualization, i will also be using the janitor package for initial cleaning.\n\nlibrary(tidyverse)\nlibrary(thematic)\n# add other packages, if any"
+  },
+  {
+    "objectID": "posts/horror-movie-exploration/index.html#explorations",
+    "href": "posts/horror-movie-exploration/index.html#explorations",
+    "title": "Tidy Tuesday Horror Movies",
+    "section": "Explorations",
+    "text": "Explorations\nThe explorations were unexpected what i found there’s movies that when they first came out i thought they did bad in the box office but here those movies are being some of the best.\n\nhorrordf <- read.csv(\"horror_movies.csv\")\n# add code to read data\n\n\nWhat movie made the most money?\nIt looks like “IT” is the horror movie that made the most money but since on the first line of codes list there’s movies there that aren’t really scary and more on the thriller side,i then did a second exploration and filtered the data by the horror genre and found that the scariest movie that made the most money in that genre is “The Exorcist”.\n\nhorrordf |>\n  select(title,revenue) |>\n   arrange(desc(revenue)) |>\n  head() |>\n  ggplot(aes(x = title, y = revenue)) +\n  geom_bar(stat = \"identity\")\n\n\n\n\n\nhorrordf |>\n  select(title,revenue,genre_names) |>\n  filter(genre_names %in% c(\"Horror\")) |>\n  arrange(desc(revenue)) |> \n  head() |>\n  ggplot(aes(x = title,y = revenue)) +\n  geom_bar(stat = \"identity\", fill = \"#104E8B\") +\n  labs(title = \"Top 6 Horror Movies\", subtitle = \"In The Horror Genre\") +\n  theme_dark()\n\n\n\n\n\n\nWhich movies are the most popular?\nAfter seeing whats popular this shows that the movies that make the most money aren’t necessarily popular.However I don’t know what the popularity scale goes off of.So im going to compare the revenue and popularity in a scatterplot.After looking at the scatterplot the most popular movie didn’t really make money so i would initially take the movies that made money over popularity.\n\nhorrordf |>\n  select(title,popularity,genre_names) |>\n  arrange(desc(popularity)) \n\n\nhorrordf |>\n  ggplot(aes(x = revenue, y = popularity)) +\n  geom_point()\n\n\n\n\n\n\nFor the movies that made a lot of revenue,did they have a large budget?\nI want to know if the budget has something to do with a movie being popular or making a large amount of revenue.\nHaving a large budget doesn’t necessarily mean anything some movies have low budgets but become box office hits for example “IT” having a 35 million dollar budget but then made over 700 million in the box office, while a movie like world war z had a 200 million dollar budget and then made 530 million dollars in revenue.\n\nhorrordf |>\n  select(title, budget, revenue) |>\n  arrange(desc(revenue)) |>\n  top_n(20) |>\n  ggplot(aes(x = title, y = revenue, color = budget)) +\n  geom_point() + \n   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +\n  labs(title = \"\")\n\nSelecting by revenue"
+  },
+  {
+    "objectID": "posts/horror-movie-exploration/index.html#discussion",
+    "href": "posts/horror-movie-exploration/index.html#discussion",
+    "title": "Tidy Tuesday Horror Movies",
+    "section": "Discussion",
+    "text": "Discussion\nSummary of findings on the data and what you learned in the process about the data context as well as about using R."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Horror Exploration",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  }
+]
