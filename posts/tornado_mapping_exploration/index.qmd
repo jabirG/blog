@@ -1,0 +1,188 @@
+---
+title: "U.S Tornadoes"
+author: "jabir"
+editor: visual
+image: "tornado.jpeg"
+---
+
+## Data
+
+This data-set is about the tornadoes that effected the U.S from 1950-2022 showing their magnitudes and other useful information
+
+### Data Dictionary
+
+| variable     | class     | description                                                                                                                                                                          |
+|--------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| om           | integer   | Tornado number. Effectively an ID for this tornado in this year.                                                                                                                     |
+| yr           | integer   | Year, 1950-2022.                                                                                                                                                                     |
+| mo           | integer   | Month, 1-12.                                                                                                                                                                         |
+| dy           | integer   | Day of the month, 1-31.                                                                                                                                                              |
+| date         | date      | Date.                                                                                                                                                                                |
+| time         | time      | Time.                                                                                                                                                                                |
+| tz           | character | [Canonical tz database timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).                                                                                      |
+| datetime_utc | datetime  | Date and time normalized to UTC.                                                                                                                                                     |
+| st           | character | Two-letter postal abbreviation for the state (DC = Washington, DC; PR = Puerto Rico; VI = Virgin Islands).                                                                           |
+| stf          | integer   | State FIPS (Federal Information Processing Standards) number.                                                                                                                        |
+| mag          | integer   | Magnitude on the F scale (EF beginning in 2007). Some of these values are estimated (see fc).                                                                                        |
+| inj          | integer   | Number of injuries. When summing for state totals, use sn == 1 (see below).                                                                                                          |
+| fat          | integer   | Number of fatalities. When summing for state totals, use sn == 1 (see below).                                                                                                        |
+| loss         | double    | Estimated property loss information in dollars. Prior to 1996, values were grouped into ranges. The reported number for such years is the maximum of its range.                      |
+| slat         | double    | Starting latitude in decimal degrees.                                                                                                                                                |
+| slon         | double    | Starting longitude in decimal degrees.                                                                                                                                               |
+| elat         | double    | Ending latitude in decimal degrees.                                                                                                                                                  |
+| elon         | double    | Ending longitude in decimal degrees.                                                                                                                                                 |
+| len          | double    | Length in miles.                                                                                                                                                                     |
+| wid          | double    | Width in yards.                                                                                                                                                                      |
+| ns           | integer   | Number of states affected by this tornado. 1, 2, or 3.                                                                                                                               |
+| sn           | integer   | State number for this row. 1 means the row contains the entire track information for this state, 0 means there is at least one more entry for this state for this tornado (om + yr). |
+| f1           | integer   | FIPS code for the 1st county.                                                                                                                                                        |
+| f2           | integer   | FIPS code for the 2nd county.                                                                                                                                                        |
+| f3           | integer   | FIPS code for the 3rd county.                                                                                                                                                        |
+| f4           | integer   | FIPS code for the 4th county.                                                                                                                                                        |
+| fc           | logical   | Was the mag column estimated?                                                                                                                                                        |
+
+## Packages
+
+packages("ggplot2")
+
+```{r}
+library(tidyverse)
+library(maps)
+library(mapproj)
+library(usmap)
+library(readr)
+library(sf)
+library(RColorBrewer)
+library(esquisse)
+```
+
+## Explorations
+
+### What are the states most at risk?
+
+```{r}
+#reading in the data
+tornado <- read_csv("tornado.csv")
+```
+
+```{r}
+us_states <- map_data("state")
+
+tornfixed <- tornado |>
+  select(st,ns) |>
+  mutate(region = recode(st,
+  "AL" = "alabama",
+  "AK" = "alaska",
+  "AZ" = "arizona",
+  "AR" = "arkansas",
+  "CA" = "california",
+  "CO" = "colorado",
+  "CT" = "connecticut",
+  "DE" = "delaware",
+  "FL" = "florida",
+  "GA" = "georgia",
+  "HI" = "hawaii",
+  "ID" = "idaho",
+  "IL" = "illinois",
+  "IN" = "indiana",
+  "IA" = "iowa",
+  "KS" = "kansas",
+  "KY" = "kentucky",
+  "LA" = "louisiana",
+  "ME" = "maine",
+  "MD" = "maryland",
+  "MA" = "massachusetts",
+  "MI" = "michigan",
+  "MN" = "minnesota",
+  "MS" = "mississippi",
+  "MO" = "missouri",
+  "MT" = "montana",
+  "NE" = "nebraska",
+  "NV" = "nevada",
+  "NH" = "new hampshire",
+  "NJ" = "new jersey",
+  "NM" = "new mexico",
+  "NY" = "new york",
+  "NC" = "north carolina",
+  "ND" = "north dakota",
+  "OH" = "ohio",
+  "OK" = "oklahoma",
+  "OR" = "oregon",
+  "PA" = "pennsylvania",
+  "RI" = "rhode island",
+  "SC" = "south carolina",
+  "SD" = "south dakota",
+  "TN" = "tennessee",
+  "TX" = "texas",
+  "UT" = "utah",
+  "VT" = "vermont",
+  "VA" = "virginia",
+  "WA" = "washington",
+  "WV" = "west virginia",
+  "WI" = "wisconsin",
+  "WY" = "wyoming"
+)) |>
+  select(region,ns)
+
+left_join(us_states,tornfixed)
+
+```
+
+### What state usually have the most tornadoes?
+
+It looks like Texas has had the most tornadoes over the years
+
+```{r}
+most_tornadoes <- tornado |>
+  select(st,ns) |>
+  group_by(st) |>
+  summarise(n = n()) |>
+  arrange(desc(n)) |>
+  top_n(10)
+
+most_tornadoes |>
+  ggplot(aes(x = st, y = n)) +
+  geom_bar(stat = "identity")
+```
+
+#### But i want to see which state has had the most tornadoes in the past 5 years?
+
+Texas is in the top 10 in 3 of the past 5 years Texas has the most in 2019,2022 and 2020.
+
+```{r}
+past5 <- tornado |>
+  select(st,ns,yr) |>
+  filter(yr %in% c("2018","2019","2020","2021","2022"), st %in% c("TX","OK","IA","MS","AL")) |> 
+  group_by(st,yr) |>
+  summarise(n = n()) |>
+  arrange(desc(n))
+
+past5 |>
+  ggplot(aes(x = n, y = yr, color = st)) +
+  geom_line() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r}
+past5 |>
+  ggplot(aes(x = st, y = n, color = yr)) +
+  geom_point()
+```
+
+```{r}
+past5 |>
+  ggplot(aes(x = st,y = n, fill = yr)) +
+  geom_bar(stat = "identity")
+```
+
+### What was the most dangerous tornado in the U.S between 1950-2022?
+
+The tornado that was the most dangerous from 1950 to 2022 was the tornado in 2011 that happened in Missouri there were 158 fatalities the tornado was called Joplin.
+
+```{r}
+tornado |>
+  select(st,mag,yr,fat) |>
+  filter(mag %in% "5",) |>
+  group_by(fat) |>
+  arrange(desc(fat))
+```

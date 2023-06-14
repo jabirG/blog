@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/tornado_mapping_exploration/index.html",
       "/posts/horror-movie-exploration/index.html",
       "/posts/video-game-exploration/index.html"
     ]

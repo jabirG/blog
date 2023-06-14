@@ -117,7 +117,8 @@ games %>%
 ```{r}
 ##avg means average people that still play that game
 games_tidy_plot <- ggplot(data = games_tidy) + 
-  geom_point(aes(x = gamename,y = avg,color = gamename)) +  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+  geom_point(aes(x = gamename,y = avg,color = gamename)) +  
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 games_tidy_plot
 ggsave("results.png",plot = games_tidy_plot)
 ```
@@ -148,7 +149,7 @@ csgo_plot <- ggplot(cscom_plot,aes(year,mean_pop,color = game)) + geom_point() +
 
 ggsave("csgo_plot.png",plot = csgo_plot)
 
-ggplot(cscom_plot,aes(year,mean_pop,color = game)) + geom_point() + geom_smooth()
+ggplot(cscom_plot,aes(year,mean_pop,color = game)) + geom_point() + geom_smooth(se = FALSE)
 ```
 
 this plot didn't really tell me the impact so
