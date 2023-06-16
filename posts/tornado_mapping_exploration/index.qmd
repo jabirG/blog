@@ -12,7 +12,7 @@ This data-set is about the tornadoes that effected the U.S from 1950-2022 showin
 ### Data Dictionary
 
 | variable     | class     | description                                                                                                                                                                          |
-|--------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|----------|----------|-----------------------------------------------------|
 | om           | integer   | Tornado number. Effectively an ID for this tornado in this year.                                                                                                                     |
 | yr           | integer   | Year, 1950-2022.                                                                                                                                                                     |
 | mo           | integer   | Month, 1-12.                                                                                                                                                                         |
@@ -141,8 +141,14 @@ most_tornadoes <- tornado |>
   top_n(10)
 
 most_tornadoes |>
-  ggplot(aes(x = st, y = n)) +
-  geom_bar(stat = "identity")
+  ggplot(aes(x = reorder(st, -n), y = n)) +
+  geom_bar(stat = "identity", fill = "#d16002") +
+  labs(
+    title = "States with the most tornadoes over the years",
+    x = "states in abbreviations",
+    y = "number of tornadoes"
+  ) +
+  theme_dark()
 ```
 
 #### But i want to see which state has had the most tornadoes in the past 5 years?
@@ -160,7 +166,13 @@ past5 <- tornado |>
 past5 |>
   ggplot(aes(x = n, y = yr, color = st)) +
   geom_line() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  labs(
+    title = "Most Tornadoes In The Past 5 Years",
+    subtitle = "Showing the Unpredictability of Tornadoes",
+    x = "Number of Tornadoes",
+    y = "year"
+  ) +
+  theme_classic()
 ```
 
 ```{r}
@@ -172,7 +184,13 @@ past5 |>
 ```{r}
 past5 |>
   ggplot(aes(x = st,y = n, fill = yr)) +
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Tornadoes over The Past 5 Years",
+    subtitle = "showing the impact more clearly",
+    x = "states",
+    y = "Number of Tornadoes"
+  )
 ```
 
 ### What was the most dangerous tornado in the U.S between 1950-2022?
