@@ -12,7 +12,7 @@ This data-set is about the tornadoes that effected the U.S from 1950-2022 showin
 ### Data Dictionary
 
 | variable     | class     | description                                                                                                                                                                          |
-|----------|----------|-----------------------------------------------------|
+|------------------|------------------|-------------------------------------|
 | om           | integer   | Tornado number. Effectively an ID for this tornado in this year.                                                                                                                     |
 | yr           | integer   | Year, 1950-2022.                                                                                                                                                                     |
 | mo           | integer   | Month, 1-12.                                                                                                                                                                         |
@@ -59,6 +59,8 @@ library(esquisse)
 ## Explorations
 
 ### What are the states most at risk?
+
+Texas is most at risk for tornadoes and some secondary states like florida.
 
 ```{r}
 #reading in the data
@@ -120,12 +122,30 @@ tornfixed <- tornado |>
   "WA" = "washington",
   "WV" = "west virginia",
   "WI" = "wisconsin",
-  "WY" = "wyoming"
+  "WY" = "wyoming",
+  "DC" = "district of columbia"
 )) |>
   select(region,ns)
 
-left_join(us_states,tornfixed)
+torn_totals <- tornfixed |>
+  group_by(region) |>
+  summarize(n_tornadoes = sum(ns))
 
+
+map <- left_join(us_states,torn_totals)
+
+```
+
+```{r}
+map |>
+  ggplot(aes(long, lat, group = subregion)) +
+  geom_map(
+    aes(map_id = region),
+    map = us_states
+  ) +
+  geom_polygon(aes(group = group, fill = n_tornadoes), color = "black") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red") +
+  coord_quickmap()
 ```
 
 ### What state usually have the most tornadoes?
