@@ -12,7 +12,7 @@ This data-set is about the tornadoes that effected the U.S from 1950-2022 showin
 ### Data Dictionary
 
 | variable     | class     | description                                                                                                                                                                          |
-|--------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|----------|----------|-----------------------------------------------------|
 | om           | integer   | Tornado number. Effectively an ID for this tornado in this year.                                                                                                                     |
 | yr           | integer   | Year, 1950-2022.                                                                                                                                                                     |
 | mo           | integer   | Month, 1-12.                                                                                                                                                                         |

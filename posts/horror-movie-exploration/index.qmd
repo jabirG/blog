@@ -68,7 +68,7 @@ horrordf |>
 
 ### Which movies are the most popular?
 
-After seeing whats popular this shows that the movies that make the most money aren't necessarily popular.However I don't know what the popularity scale goes off of.So im going to compare the revenue and popularity in a scatterplot.After looking at the scatterplot the most popular movie didn't really make money so i would initially take the movies that made money over popularity.
+After seeing whats popular this shows that the movies that make the most money aren't necessarily popular.However I don't know what the popularity scale goes off of.So i'm going to compare the revenue and popularity in a scatterplot.After looking at the scatterplot the most popular movie didn't really make money so i would initially take the movies that made money over popularity.
 
 ```{r}
 #| eval: false 
